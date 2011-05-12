@@ -15,19 +15,17 @@ import org.jboss.netty.channel.SimpleChannelHandler;
 public class ChannelHandler extends SimpleChannelHandler {
 	
 	@Override
-	public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) {
+	public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws Exception {
 		String msg = e.getMessage().toString();
 		
-		String[] args = msg.split("%%%jnet%%%"); // %%%jnet%%% is the separator
+		String[] args = msg.split(Server.SPLITTER); // %jnet% is the separator
 		
 		if (args.length < 3) return;
 		
 		// basic security check
 		String password = args[0]; // we get password that client sent us.
 		
-		if (Server.properties.getProperty("password") != password) {
-			// if it doesn't equal the password arg from here then we don't accept connection :D
-			// %%%jnet%%% is the splitter because you can't split with spaces in messages
+		if (!Server.properties.getProperty("password").equalsIgnoreCase(password)) {
 			//ctx.getChannel().write("bad password");
 			return;
 		}
@@ -38,7 +36,9 @@ public class ChannelHandler extends SimpleChannelHandler {
 		
 		String data = args[2];
 		
-		PacketDistributor.handle(new Packet(opCode, data, ctx.getChannel()));
+		String[] arg = data.split(Server.ARG_SPLITTER);
+		
+		PacketDistributor.handle(new Packet(opCode, data, ctx.getChannel()), arg);
 	}
 	
 	@Override

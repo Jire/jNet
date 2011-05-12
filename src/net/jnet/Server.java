@@ -24,6 +24,7 @@ public final class Server {
 	// misc
 	public static final Properties properties = new Properties();
 	public static final Interpreter interp = new Interpreter("jNet", "data/cmd.jf");
+	public static final String SPLITTER = "%jnet%", ARG_SPLITTER = "%jarg%";
 	
 	// networking fields
 	public static final ServerBootstrap bootstrap = new ServerBootstrap(

@@ -10,6 +10,7 @@ public final class PacketDistributor {
 	
 	public static final void feed() {
 		assign(new LoginPacketHandler(), 0);
+		assign(new RobotPacketHandler(), 1);
 	}
 	
 	public static final PacketHandler[] mass = new PacketHandler[255];
@@ -18,12 +19,15 @@ public final class PacketDistributor {
 		mass[opCode] = handler;
 	}
 	
-	public static final void handle(Packet packet) {
+	public static final void handle(Packet packet, String[] arg) {
 		if (packet.getOpCode() == -1) {
-			new DefaultPacketHandler().perform(packet, packet.getData().toString());
+			new DefaultPacketHandler().perform(packet, packet.getData().toString(), arg);
 			return;
 		}
-		mass[packet.getOpCode()].perform(packet, packet.getData().toString());
+		try {
+			mass[packet.getOpCode()].perform(packet, packet.getData().toString(), arg);
+		} catch (Exception e) {
+		}
 	}
 
 }

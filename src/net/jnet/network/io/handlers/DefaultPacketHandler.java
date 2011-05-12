@@ -6,8 +6,8 @@ import net.jnet.network.io.PacketHandler;
 public class DefaultPacketHandler implements PacketHandler {
 
 	@Override
-	public void perform(Packet packet, String data) {
+	public void perform(Packet packet, String data, String... args) {
 		// do nothing
 	}
-
+	
 }
