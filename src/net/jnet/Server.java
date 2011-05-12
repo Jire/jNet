@@ -9,6 +9,7 @@ import java.util.Properties;
 import java.util.concurrent.Executors;
 
 import net.jnet.network.PipelineFactory;
+import net.jnet.network.io.PacketDistributor;
 
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
@@ -45,6 +46,8 @@ public final class Server {
 	}
 	
 	public static void run() {
+		PacketDistributor.feed();
+		
 		port = Integer.parseInt(properties.getProperty("port"));
 		
 		bootstrap.setOption("keepAlive", true);
